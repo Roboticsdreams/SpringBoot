@@ -1,4 +1,0 @@
-autoEnabled=true
-eclipse.preferences.version=1
-extraProperties=
-fileExclusions=FILE\:src/main/java/com/bookstore/Application.java\r\nFILE\:src/test/java/com/bookstore/test/ApplicationTest.java

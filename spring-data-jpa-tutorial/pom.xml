@@ -8,13 +8,13 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.rdreams</groupId>
-	<artifactId>bookstore-api</artifactId>
+	<groupId>com.roboticsdreams</groupId>
+	<artifactId>spring-data-jpa-tutorial</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bookstore-api</name>
-	<description>Book Store project for Spring Boot</description>
+	<name>spring-data-jpa-tutorial</name>
+	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,7 +41,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

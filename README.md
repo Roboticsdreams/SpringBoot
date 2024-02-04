@@ -1,4 +1,4 @@
 Spring Boot Tutorial
 
-1. Bookstore-api
-2. Spring-data-jpa tutorial
+1. bookstore-api
+2. spring-data-jpa

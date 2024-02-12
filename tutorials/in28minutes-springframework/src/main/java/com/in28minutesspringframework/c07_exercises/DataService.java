@@ -1,2 +1,5 @@
-package com.in28minutesspringframework.c07_exercises;public class DataService {
+package com.in28minutesspringframework.c07_exercises;
+
+public interface DataService {
+    int[] retrieveData();
 }

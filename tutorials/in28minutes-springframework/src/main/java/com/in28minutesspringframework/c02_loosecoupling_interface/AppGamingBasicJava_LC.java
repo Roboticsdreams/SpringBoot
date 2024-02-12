@@ -1,7 +1,7 @@
-package com.in28minutesspringframework.c2_loosecoupling_interface;
+package com.in28minutesspringframework.c02_loosecoupling_interface;
 
-import com.in28minutesspringframework.c2_loosecoupling_interface.game.GameRunner;
-import com.in28minutesspringframework.c2_loosecoupling_interface.game.PacManGame;
+import com.in28minutesspringframework.c02_loosecoupling_interface.game.GameRunner;
+import com.in28minutesspringframework.c02_loosecoupling_interface.game.PacManGame;
 
 public class AppGamingBasicJava_LC {
     public static void main(String[] args) {

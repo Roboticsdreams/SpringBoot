@@ -1,4 +1,4 @@
-package com.in28minutesspringframework.c3_loosecoupling_springlevel1;
+package com.in28minutesspringframework.c03_loosecoupling_springlevel1;
 
 
 import org.springframework.beans.factory.annotation.Qualifier;

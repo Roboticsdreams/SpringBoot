@@ -1,4 +1,4 @@
-package com.in28minutesspringframework.c1_tightcoupling.game;
+package com.in28minutesspringframework.c01_tightcoupling.game;
 
 public class MarioGame {
     public void left(){

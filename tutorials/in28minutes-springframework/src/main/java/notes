@@ -1,0 +1,389 @@
+Overview
+---------
+1.Tight Coupling
+2.Loose Coupling
+3.Java Interfaces
+4.Spring Containers
+5.Application Context
+6.BasicAnnotations
+7.@Configurations
+8.@Bean
+9.Auto-wiring
+10.Java Beans vs Spring Bean
+
+----------------------------------------------------------
+1. what is Spring Container?
+pojos and config ---> ioc container --> ready system
+
+Spring container manages spring beans and their lifecycle
+It can be created by two ways
+1. Bean Factory: basic spring container
+2. Application Context: Advanced Spring Container with enterprise-specific features
+	- Easy to use in web applications
+	- Easy internationalization
+	- Easy integration with spring AOP
+3. Which one to use?
+	Most enterprise applications use ApplicationContext
+	- Recommended for web applications, web services - REST API and microservices.
+
+2. Java Object vs Java Bean vs Spring Beans
+2.1. Java object
+---------------
+class Pojo {
+	//plain old java object - pojo
+	private String text;
+	private int number;
+	public String toString() {
+		return text + ":" + number;
+	}
+}
+
+public class PojoMain {
+	public static void main(String args[]) {
+		Pojo pojo = new Pojo();
+		System.out.println(pojo);
+	}
+}
+ o/p: null:0
+
+ 2.2. Java Bean
+ -------------------
+ class JavaBean implements Serializable {
+ 	private String text;
+ 	private int number;
+
+ 	public JavaBean() {
+ 	}
+
+ 	public String getText()  {
+ 		return text;
+ 	}
+
+ 	public void SetText(String text){
+ 		this.text = text;
+ 	}
+
+ 	public int getNumber(){
+ 		return number;
+ 	}
+
+ 	public void SetNumber(int number) {
+ 		this.number = number;
+ 	}
+}
+
+Java Bean must contains
+	- no args constructor
+	- must have getters and setters
+	- implements Serializable
+
+2.3.Spring Bean
+--------------
+Any java object that is managed by Spring
+-Spring uses IOC container(Bean Factory or Application context) to manage these objects
+
+3.How to list all the beans managed by spring containers
+Arrays.stream(context.getBeanDefinitionNames()).forEach(System.out::println)
+
+4. How to manage multiple matching beans?
+	we can manage two ways
+	- @Primary
+	- @Qualifier("qualifier_name")
+
+5. Spring is managing objects and performing auto-wiring
+    -But aren't we writing the code to create objects?
+    -How do we get spring to create objects for us?
+       By adding @Component and @ComponentScan annotation - create the object and autowire it
+
+6. Is spring really making things easy?
+
+
+@Primary vs @Qualifier - Which one to use?
+----------------------------------------------------------------|
+|@Component @Primary											|
+|class QuickSort implement SortingAlgorithm {}					|
+|																|
+|@Component 													|
+|class BubbleSort implement SortingAlgorithm {}					|
+|																|
+|@Component @Qualifier("RadixSortQualifier")					|
+|class QuickSort implement SortingAlgorithm {}					|
+|																|
+|@Component														|
+|class AnotherComplexAlgorithm									|
+|	@Autowired 													|
+|	private SortingAlgorithm algorithm 							|
+|																|
+|@Component														|
+|class AnotherComplexAlgorithm									|
+|	@Autowired @Qualifier("RadixSortQualifier")					|
+|	private SortingAlgorithm iWantToUseRadixSortOnly;			|
+-----------------------------------------------------------------
+@Primary -A bean should be given preference when multiple candidates are qualified
+
+@Qualifier - A specific bean should be auto-wired(name of the bean can be used as qualifier)
+
+ALWAYS think from the perspective of the class using the SortingAlgorithm:
+- just @Autowired- give ne (preferred) SortingAlgorithm
+- @Autowired + @Qualifier- I only want to use specific SortingAlgorithm - RadixSort
+
+Exploring Spring Dependency Injections Types
+-----------------------------------------------
+1.Constructor-based
+2.Setter-based
+3.Field
+
+Constructor-based dependency injections is most recommended one for spring.
+
+ImportantTerminology
+------------------------
+@Component
+Dependency - implements
+ComponentScan
+Dependency Injection
+    - identifying beans and dependencies and wiring together
+    * Spring Beans
+    * IoC container
+    * Auto-wiring
+
+-------------------------------------------------------------------------------------------------------------
+Heading                 @Component                      @Bean
+------------------------------------------------------------------------------------------------------------
+where?          can be used on any java class           Typically used on methods in
+                                                        Spring configuration classes
+-------------------------------------------------------------------------------------------------------------
+ease of used    very easy just add an annotation        You write all the code
+-------------------------------------------------------------------------------------------------------------
+Autowiring      yes field, Setter or constructor        yes- method call or method parameters
+                injection
+-------------------------------------------------------------------------------------------------------------
+who creates     Spring Framework                        you write bean creation code
+beans?
+-------------------------------------------------------------------------------------------------------------
+Recommended     Instantiating Beans for your own        1.Custom Business Logic
+for             application code:@Component             2.Instantiating Beans for 3rd party lib:@Bean
+-------------------------------------------------------------------------------------------------------------
+
+Initialization of Spring Beans
+-------------------------------
+- Eager initialization (Recommended)
+- Lazy initialization
+
+-------------------------------------------------------------------------------------------------------------
+Heading                 Lazy Initialization                         Eager Initialization
+-------------------------------------------------------------------------------------------------------------
+Initialization time     Bean initialization when it is              Bean initialized at startup of the
+                        first made use of in the application        application
+-------------------------------------------------------------------------------------------------------------
+Default                 Not Default                                 Default
+-------------------------------------------------------------------------------------------------------------
+Code Snippet            @Lazy or @Lazy(value=true)                  @Lazy(value=false) or (Absence of Lazy)
+-------------------------------------------------------------------------------------------------------------
+What happens if there   Errors will result in runtime               Errors will prevent application
+are errors in           exceptions                                  from starting up
+initializing?
+-------------------------------------------------------------------------------------------------------------
+Usage                   Rarely used                                 Very frequently used
+-------------------------------------------------------------------------------------------------------------
+Memory Consumption      Less (until bean is initialized)            All beans are initialized at startup
+-------------------------------------------------------------------------------------------------------------
+Recommended Scenario    Beans very rarely used in your app          Most of your beans
+-------------------------------------------------------------------------------------------------------------
+
+Spring Bean Scopes
+-------------------
+* Singleton - only one object
+* Prototype - many object for same ioc containers
+
+Scopes applicable ONLY for web-aware Spring ApplicationContext
+- Request - one object instance per single HTTP request
+- Session - one object instance per user HTTP Session
+- Application - one object instance per web application runtime
+- Websocket - one object instance per WebSocket instance
+
+Java Singleton (GoF) vs Spring Singleton
+------------------------------------------
+Java Singleton - one object instance per JVM
+Spring Singleton - one object instance per Spring IoC container
+
+-------------------------------------------------------------------------------------------------------------
+Heading                 Prototype                                   Singleton
+-------------------------------------------------------------------------------------------------------------
+Instances               Possibly many per spring IoC container      One per Spring IOC Container
+-------------------------------------------------------------------------------------------------------------
+Beans                   New bean instance created every time        Same bean instance resued
+                        the bean is referred to
+-------------------------------------------------------------------------------------------------------------
+Default                 NOT Default                                 Default
+-------------------------------------------------------------------------------------------------------------
+Code Snippet            @Scope(value=ConfigurableBeanFactory.       @Scope(value=ConfigurableBeanFactory.
+                        SCOPE_PROTOTYPE)                            SCOPE_SINGLETON) or Default
+-------------------------------------------------------------------------------------------------------------
+Usage                   Rarely used                                 very frequently used
+-------------------------------------------------------------------------------------------------------------
+Recommended             Stateful beans                              Stateless beans
+-------------------------------------------------------------------------------------------------------------
+
+Evolution of Jakarta
+---------------------------------------------
+-J2EE
+-Java EE
+-Jakarta EE
+    Important Specifications
+        - Jakarta Server Pages (JSP)
+        - Jakarta Standard Ta Library (JSTL)
+        - Jakarta Enterprise Beans (EJB)
+        - Jakarta RESTful Web Services (JAX-RS)
+        - Jakarta Bean Validation
+        - Jakarta Contexts and Dependency Injection (CDI)
+        - Jakarta Persistence (JPA)
+    Supported by Spring 6 and Spring Boot 3
+        - that's why we use jakarta packages(instead of javax)
+
+Jakarta CDI
+----------------
+CDI is a specification(interface)
+- Spring Framework implements CDI
+
+Important Inject API Annotations:
+-Inject (~Autowired in Spring)
+-Named(~Component in Spring)
+-Qualifier
+-Scope
+-Singleton
+
+-------------------------------------------------------------------------------------------------------------
+Heading                 Annotations                                 XML Configuration
+-------------------------------------------------------------------------------------------------------------
+Ease of use             Very Easy(Defined close to source-class     Cumbersome
+                        method and/or variable)
+-------------------------------------------------------------------------------------------------------------
+Short and concise       Yes                                         No
+-------------------------------------------------------------------------------------------------------------
+Clean POJOs             No POJOs are polluted with annotations      Yes, no change in java code
+-------------------------------------------------------------------------------------------------------------
+Easy to maintain        Yes                                         No
+-------------------------------------------------------------------------------------------------------------
+Usage Frequency         Almost all recent projects                  Rarely
+-------------------------------------------------------------------------------------------------------------
+Recommendation         Either of them is fine BUT be consistent    Do NOT mix both
+-------------------------------------------------------------------------------------------------------------
+Debugging               Hard                                        Medium
+-------------------------------------------------------------------------------------------------------------
+
+Spring Stereotype Annotation
+-------------------------------
+@Component
+-Base for all spring stereotype annotations
+-Specializations of @Component:
+    -@Service - for business class
+    -@Controller - for Rest Controller
+    -@Repository - for database
+
+Important Spring Annotations
+-------------------------------
+@Primary
+-Indicates that a bean should be given preference when multiple candidates are qualified to autowire a single valued dependency
+
+@Qualifier
+-Used on a field or parameter as a qualifier for candidate beans when autowiring
+
+@Lazy
+-Indicates that a beans has to be lazily initialized Absence of @Lazy annotation will lead to eager initialization
+
+@Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+-Defines a bean to be a prototype - a new instance will be created every time you refer to the bean. Default scope is singleton - one instance per LOC container
+
+@PostConstruct
+-Identifies the method that will be executed after dependency injection is done to perform any initialization
+
+@PreDestory
+-Identifies the method that wil receive the callback notification to signal that the instance is in the process of being removed by the container. Typically used to release resources that it has been holding
+
+@Named
+-Jakarta contexts and dependency injection (CDI) annotation similar to Component
+
+@Inject
+-Jakarta contexts and dependency injection (CDI) annotation similar to Autowired
+
+Important Spring Concepts
+-------------------------
+Dependency Injections
+-Identify beans their dependencies and wire them together(Provide IOC -inversion of Control)
+
+Const. Injection
+-Dependencies are set by creating the bean using its Constructor
+
+Setter Injection
+-Dependencies are set by calling setter methods on your beans
+
+Field Injection
+-No Setter or constructor. Dependency is injected using reflection
+
+IOC Container
+-Spring IOC context that manages Spring beans & their lifecycle
+
+Bean Factory
+-Basic Spring IOC Container
+
+Application Context
+-Advanced Spring IOC Container with enterprise-specific features. Easy to use in web applications with internationalization features and good integration with Spring AOP
+
+Spring Beans
+-Objects managed by Spring
+
+Auto-wiring
+-Process of wiring in dependencies for a Spring Bean
+
+
+Spring Big Picture - Framework, Modules and Projects
+-----------------------------------------------------
+Spring Core
+-These are the fundamental building blocks to:
+	* Building web applications
+	* Creating REST API
+	* Implementing authentication and authorization
+	* Talking to a database
+	* Integrating with other systems
+	* Writing great unit tests
+
+Spring Big Picture:
+	- Spring Framework
+	- Spring Modules
+	- Spring Projects
+
+Spring Framework contains multiple Spring Modules:
+	- Fundamental Features: core (IOC Container, Dependency Injection, Auto wiring)
+	- Web: Spring MVC etc (Web applications, REST API)
+	- Web Reactive: Sprin WebFlux etc
+	- Data Access: JDBC, JPA etc
+	- Integration: JMS etc
+	- Testing: Mock Objects, Spring MVC Test etc.
+
+No Dumb Question: Why is Spring Framework divided into Modules?
+- Each application can choose modules they want to make use of
+
+Spring Projects
+-Application architectures evolve continuosly
+	* Web > REST API > Microservices > Cloud > ...
+
+Spring evolves through Spring Projects:
+	* First Project: Spring Framework
+	* Spring Security: Secure your web application or REST API or microservice
+	* Spring Data: Integrate the same way with different types of database: NOSQL and Relational
+	* Spring Integration: Address challenges with integration with other applications
+	* Spring Boot: Popular framework to build microservices
+	* Spring Cloud: Build cloud native applications
+	* Hierarchy: Spring Projects > Spring Framework > Spring Modules
+
+Why is Spring Eco System popular?
+-Loose Coupling : Spring manages creation and wiring of beans and dependencies
+	* Makes it easy to build loosely coupled applications
+	* Makes writing unit tests easy! (Spring unit testing)
+-Reduced Boilerplate Code: Focus on Business Logic
+	* Example: No need for exception handling in each method!
+		-All checked Exceptions are converted to Runtime or Unchecked exceptions
+-Architectural Flexibility: Spring Modules and Projects
+	* You can pick and choose which ones to use (You Don't need to use all of them!)
+-Evolution with Time: Microservices and cloud
+	* Spring Boot, Spring Cloud etc.

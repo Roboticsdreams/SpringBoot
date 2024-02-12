@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-public class RealworldSpringContext {
+public class RealworldSpringContextExercise {
     public static void main(String[] args) {
-        try(var context = new AnnotationConfigApplicationContext(RealworldSpringContext.class)) {
+        try(var context = new AnnotationConfigApplicationContext(RealworldSpringContextExercise.class)) {
             System.out.println(context.getBean(BusinessCalculationService.class).findMax());
         }
     }

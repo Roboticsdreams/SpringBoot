@@ -1,4 +1,4 @@
-package com.in28minutesspringframework.c2_loosecoupling_interface.game;
+package com.in28minutesspringframework.c02_loosecoupling_interface.game;
 
 public class MarioGame implements GamingConsole {
     public void left(){

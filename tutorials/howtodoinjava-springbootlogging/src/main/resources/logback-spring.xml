@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="LOGGING_FILE" source="logging.file" defaultValue="logs/application" />
+    <springProperty scope="context" name="LOGGING_PATTEN_CONSOLE" source="logging.pattern.console" defaultValue="%d %p [%c{1}] - %m%n"/>
+    <springProperty scope="context" name="LOGGING_PATTEN_FILE" source="logging.pattern.file" defaultValue="%d %-5level [%thread] %logger : %msg%n"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOGGING_PATTEN_CONSOLE}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROLLING_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGGING_FILE}.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${LOGGING_PATTEN_FILE}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGGING_FILE}_%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>10KB</maxFileSize>
+            <maxHistory>20</maxHistory>
+            <totalSizeCap>200MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.howtodoinjavaspringbootlogging.controller" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ROLLING_APPENDER"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO"/>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ROLLING_APPENDER"/>
+    </root>
+</configuration>

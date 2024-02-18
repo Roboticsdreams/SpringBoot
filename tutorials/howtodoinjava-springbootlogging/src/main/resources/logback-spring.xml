@@ -20,8 +20,8 @@
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOGGING_FILE}_%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-            <maxFileSize>10KB</maxFileSize>
-            <maxHistory>20</maxHistory>
+            <maxFileSize>20KB</maxFileSize>
+            <maxHistory>2</maxHistory>
             <totalSizeCap>200MB</totalSizeCap>
         </rollingPolicy>
     </appender>

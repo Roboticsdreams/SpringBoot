@@ -1,2 +1,10 @@
-package com.fullstackmastery.codewithprojectecommerce.dto;public class SignupRequest {
+package com.fullstackmastery.codewithprojectecommerce.dto;
+
+import lombok.Data;
+
+@Data
+public class SignupRequest {
+    private String email;
+    private String password;
+    private String name;
 }

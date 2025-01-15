@@ -1,3 +1,0 @@
-bookstore-api
-
-tutorials

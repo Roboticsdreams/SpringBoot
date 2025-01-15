@@ -1,4 +1,4 @@
-package com.bookstoreapi;
+package com.rdreams.bookstoreapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

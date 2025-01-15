@@ -1,4 +1,4 @@
-package com.bookstoreapi.exception;
+package com.rdreams.bookstoreapi.exception;
 
 import lombok.*;
 

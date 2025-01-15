@@ -1,4 +1,4 @@
-package com.bookstoreapi;
+package com.rdreams.bookstoreapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

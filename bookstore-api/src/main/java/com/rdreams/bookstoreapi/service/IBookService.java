@@ -1,6 +1,6 @@
-package com.bookstoreapi.service;
+package com.rdreams.bookstoreapi.service;
 
-import com.bookstoreapi.entity.Book;
+import com.rdreams.bookstoreapi.model.Book;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,3 +12,4 @@ public interface IBookService {
     void deleteBook(Book book);
     void deleteAllBooks();
 }
+

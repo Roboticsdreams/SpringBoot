@@ -1,9 +1,10 @@
-package com.bookstoreapi.service;
+package com.rdreams.bookstoreapi.service;
 
-import com.bookstoreapi.entity.Book;
-import com.bookstoreapi.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.rdreams.bookstoreapi.model.Book;
+import com.rdreams.bookstoreapi.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +38,6 @@ public class BookServiceImpl implements IBookService {
     public void deleteAllBooks() {
         bookRepository.deleteAll();
     }
+
 }
+
